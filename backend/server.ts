@@ -1,6 +1,9 @@
-import express, { Request, Response} from "express"
-import cors from 'cors'
-import morgon from 'morgon'
+import express, { Request, Response} from "express";
+import cors from 'cors';
+import morgan from 'morgan';
+import dotenv from "dotenv"
+import connectDB from "./config/db";
+import userRoutes from "./routes/userRoutes";
 
 const PORT = process.env.PORT || 5000
 
@@ -10,11 +13,16 @@ app.use(cors())
 
 app.use(express.json())
 
-app.use(morgon("dev"))
+app.use(morgan("dev"))
+dotenv.config()
+
+connectDB();
 
 app.get("/", (req: Request, res: Response) => {
   res.send("API IS RUNNING.... better catch it...")
 })
+
+app.use("/api/users", userRoutes)
 
 
 
